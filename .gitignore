@@ -1,4 +1,4 @@
-adb_clnt.c
-adb_svc.c
-adb_xdr.c
-adb.h
+/src/adb_clnt.c
+/src/adb_svc.c
+/src/adb_xdr.c
+/src/adb.h

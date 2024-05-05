@@ -1,5 +1,9 @@
 # ADDRESS BOOK RPC
 
+### **OVERVIEW**
+
+This project defines an RPC interface for an address book program and implements both the server and client components essential for its functionality. The RPC interface serves as a communication bridge between the client and server, enabling clients to interact with a basic address book stored on the server. Key functionalities encompass inserting, removing, listing, and searching contacts.
+
 ### **INSTALLATION GUIDE**
 
 ```
