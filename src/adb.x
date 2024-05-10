@@ -3,18 +3,24 @@
     offers the procedures INSERT, REMOVE, LIST, and SEARCH
 */
 
-struct agenda_contact {            
-    char name[255];
+struct contact {            
+    char name[50];
+    char cpf[14];
     char phone[15];
-    char address[255];
-}; 
+    char address[50];
+};
+
+struct agenda{
+    contact contacts[100];
+    int tam;
+}
 
 program ADBPROG{     
     version ADBVERS{
           int INITIALIZE(void) = 1; 
-          int INSERT(agenda_contact) = 2; 
+          int INSERT(contact) = 2; 
           int REMOVE(string) = 3;
-          void LIST(void) = 4;
-          agenda_contact SEARCH(string) = 5;
+          int SEARCH(string) = 4;
+          agenda LIST(void) = 5;
     } = 1; /* Program version */
 } = 0x30090950;
