@@ -1,27 +1,26 @@
 /*  adb_server.c - SERVER PROGRAM */
-
+#include <string.h>
 #include "adb_server.h"
 
 /* Server Remote Procedures and Global Data */
 
-struct agenda_contact address_book[MAX_CONTACTS];
-int num_contacts = 0;
+struct agenda address_book = {.tam = 0};
 
 /* Init address book data */
 
-int initialize(){
+int initialize(void){
     printf("Initializing address book\n");
-    num_contacts = 0; 
+    address_book.tam = 0; 
     return 1; 
 }
 
 /* Insert new contact */
 
-int insert(agenda_contact new_contact){
-    if (num_contacts < MAX_CONTACTS) {
+int insert_contact(contact new_contact){
+    if (address_book.tam < MAX_CONTACTS) {
         printf("Inserting contact: %s\n", new_contact.name);
-        address_book[num_contacts] = new_contact;
-        num_contacts++;
+        memcpy(&address_book.contacts[address_book.tam], &new_contact, sizeof(struct contact));
+        address_book.tam++;
         return 1; /* Successful insertion */ 
     } else {
         printf("Failed to insert contact: Address book is full\n");
@@ -31,16 +30,16 @@ int insert(agenda_contact new_contact){
 
 /* Remove contact */
 
-int remove(string name){
-    for (int i=0; i<num_contacts; i++){
-        if(strcmp(name, address_book[i].name) == 0){
-            printf("Removing contact: %s\n",address_book[i].name);
+int remove_contact(char *name){
+    for (int i = 0; i < address_book.tam; i++){
+        if(strcmp(name, address_book.contacts[i].name) == 0){
+            printf("Removing contact: %s\n",address_book.contacts[i].name);
             
             /* Filling empty gap */
-            for (int j = i; j < num_contacts - 1; j++) {
-                address_book[j] = address_book[j + 1];
+            for (int j = i; j < address_book.tam - 1; j++) {
+                address_book.contacts[j] = address_book.contacts[j + 1];
             }
-            num_contacts--;
+            address_book.tam--;
             return 1; /* Contact successfully removed */
         }
     }
@@ -48,29 +47,33 @@ int remove(string name){
     return 0; /* Contact not found */
 }
 
-/* List all contacts name */
-
-void list(void) 
-{ 
-    printf("Listing contacts:\n");
-    for (int i = 0; i < num_contacts; i++) {
-        printf("Name: %s\nPhone: %s\nAddress: %s\n", address_book[i].name, address_book[i].phone, address_book[i].address);
-    }
-}
-
 /* Search by name and returns all info */
 
-agenda_contact search(string name) 
+struct contact search_contact(char *name) 
 { 
-    for (int i = 0; i < num_contacts; i++) {
-        if (strcmp(name, address_book[i].name) == 0) {
+    for (int i = 0; i < address_book.tam; i++) {
+        if (strcmp(name, address_book.contacts[i].name) == 0) {
             printf("Contact %s found\n", name);
-            return address_book[i];
+            return address_book.contacts[i];
         }
     }
     /* Return an empty contact */
     
     printf("Contact %s not found\n", name);
-    agenda_contact empty_contact = {"", "", ""};
+    struct contact empty_contact = {"", "", "", ""};
     return empty_contact;
 } 
+
+/* List all contacts name */
+
+void list_contacts(void) 
+{ 
+    printf("Listing contacts:\n");
+    for (int i = 0; i < address_book.tam; i++) {
+        printf("Name: %s\nCpf: %s\nPhone: %s\nAddress: %s\n",
+        address_book.contacts[i].name,
+        address_book.contacts[i].cpf,
+        address_book.contacts[i].phone,
+        address_book.contacts[i].address);
+    }
+}
