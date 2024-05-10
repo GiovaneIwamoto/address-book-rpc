@@ -16,7 +16,7 @@ int initialize(void){
 
 /* Insert new contact */
 
-int insert_contact(contact new_contact){
+int insert_contact(struct contact new_contact){
     if (address_book.tam < MAX_CONTACTS) {
         printf("Inserting contact: %s\n", new_contact.name);
         memcpy(&address_book.contacts[address_book.tam], &new_contact, sizeof(struct contact));
