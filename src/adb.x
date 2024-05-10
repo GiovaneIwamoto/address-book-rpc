@@ -13,7 +13,7 @@ struct contact {
 struct agenda{
     contact contacts[100];
     int tam;
-}
+};
 
 program ADBPROG{     
     version ADBVERS{
