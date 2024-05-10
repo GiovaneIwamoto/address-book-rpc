@@ -2,3 +2,4 @@
 /src/adb_svc.c
 /src/adb_xdr.c
 /src/adb.h
+.vscode
