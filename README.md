@@ -11,6 +11,18 @@ RPC generator:
 $ rpcgen adb.x
 ```
 
+```
+Compile server:
+
+$ gcc -o server adb_sif.c adb_svc.c adb_server.c adb_xdr.c -I/usr/include/tirpc -ltirpc
+```
+
+```
+Compile client:
+
+$ gcc -o client adb_cif.c adb_clnt.c adb_client.c adb_xdr.c -I/usr/include/tirpc -ltirpc -fcommon 
+```
+
 ### **CLEAR RPC STUBS**
 
 ```
