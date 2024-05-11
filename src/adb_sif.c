@@ -27,3 +27,9 @@ struct contact *search_1_svc(char **arg, struct svc_req *rqstp) {
     result = search_contact(*arg);
     return &result;
 }
+
+struct agenda *list_1_svc(void *, struct svc_req *rqstp) {
+    static struct agenda result;
+    result = list_contacts();
+    return &result;
+}

@@ -5,7 +5,7 @@
 /* Init agenda */
 int initialize() {
     static int result;
-    result = *initialize_1_svc(NULL, clnt);
+    result = *initialize_1_svc(NULL, NULL);
     if (result == 0) {
         clnt_perror(clnt, "Error initializing agenda");
     }

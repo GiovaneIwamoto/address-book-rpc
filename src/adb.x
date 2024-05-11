@@ -20,7 +20,7 @@ program ADBPROG{
           int INITIALIZE(void) = 1; 
           int INSERT(contact) = 2; 
           int REMOVE(string) = 3;
-          int SEARCH(string) = 4;
+          contact SEARCH(string) = 4;
           agenda LIST(void) = 5;
     } = 1; /* Program version */
 } = 0x30090950;

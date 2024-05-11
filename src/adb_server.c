@@ -8,7 +8,7 @@ struct agenda address_book = {.tam = 0};
 
 /* Init address book data */
 
-int initialize(void){
+int initialize(){
     printf("Initializing address book\n");
     address_book.tam = 0; 
     return 1; 
@@ -66,7 +66,7 @@ struct contact search_contact(char *name)
 
 /* List all contacts name */
 
-void list_contacts(void) 
+struct agenda list_contacts(void) 
 { 
     printf("Listing contacts:\n");
     for (int i = 0; i < address_book.tam; i++) {
@@ -76,4 +76,5 @@ void list_contacts(void)
         address_book.contacts[i].phone,
         address_book.contacts[i].address);
     }
+    return address_book;
 }
