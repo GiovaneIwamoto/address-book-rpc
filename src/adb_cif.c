@@ -4,43 +4,65 @@
 
 /* Init agenda */
 int initialize() {
-    static int result;
-    result = *initialize_1_svc(NULL, NULL);
-    if (result == 0) {
-        clnt_perror(clnt, "Error initializing agenda");
-    }
-    return &result;
-}
+    int * result;
+    result = initialize_1(NULL, handle);
+    if (result == (int *)NULL) 
+        cli_error();
+     
+    return *result; 
+} 
 
 /* Insert new contact */
 int insert_contact(struct contact *new_contact) {
     static int result;
-    result = *insert_1_svc(new_contact, clnt);
+    result = *insert_1(new_contact, handle);
     if (result == 0) {
-        clnt_perror(clnt, "Error inserting contact");
+        cli_error();
     }
-    return &result;
+    return result;
 }
 
 /* Remove contact */
 int remove_contact(char *name) {
     static int result;
-    result = *remove_1_svc(&name, clnt);
+    result = *remove_1(&name, handle);
     if (result == 0) {
-        clnt_perror(clnt, "Error removing contact");
+        cli_error();
     }
-    return &result;
+    return result;
 }
 
 /* Search contact */
-struct contact *search_contact(char *name) {
+struct contact search_contact(char *name) {
     static struct contact result;
-    struct contact *result_ptr = search_1_svc(&name, clnt);
+    struct contact *result_ptr = search_1(&name, handle);
     if (result_ptr == NULL) {
-        clnt_perror(clnt, "Contact not found");
+        clnt_perror(handle, "Contact not found");
     } else {
         result = *result_ptr;
     }
-    return &result;
+    return result;
 }
 
+/* List contacts */
+struct agenda list_contacts(){
+    static struct agenda result;
+    struct agenda *result_ptr = list_1(NULL, handle);
+    if(result_ptr == NULL){
+        clnt_perror(handle, "Error listing all contacts");
+    } else {
+        result = *result_ptr;
+    }
+    return result;
+}
+
+void cli_error()
+{
+/*  An error occurred while calling the server
+    Print error message and die */
+    
+   printf("RPC Failed\n");
+   clnt_perror(handle, "RPC Error");
+   clnt_destroy( handle );
+   exit(1);
+}
