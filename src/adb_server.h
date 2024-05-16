@@ -5,7 +5,7 @@
 
 #define MAX_CONTACTS 100
 
-int initialize(void);
+int initialize();
 
 int insert_contact(struct contact new_contact);
 

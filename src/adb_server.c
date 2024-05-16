@@ -18,9 +18,9 @@ int initialize(){
 
 int insert_contact(struct contact new_contact){
     if (address_book.tam < MAX_CONTACTS) {
-        printf("Inserting contact: %s\n", new_contact.name);
         memcpy(&address_book.contacts[address_book.tam], &new_contact, sizeof(struct contact));
         address_book.tam++;
+        printf("Contact inserted: %s\n", new_contact.name);
         return 1; /* Successful insertion */ 
     } else {
         printf("Failed to insert contact: Address book is full\n");
@@ -33,13 +33,13 @@ int insert_contact(struct contact new_contact){
 int remove_contact(char *name){
     for (int i = 0; i < address_book.tam; i++){
         if(strcmp(name, address_book.contacts[i].name) == 0){
-            printf("Removing contact: %s\n",address_book.contacts[i].name);
             
             /* Filling empty gap */
             for (int j = i; j < address_book.tam - 1; j++) {
                 address_book.contacts[j] = address_book.contacts[j + 1];
             }
             address_book.tam--;
+            printf("Contact removed: %s\n",address_book.contacts[i].name);
             return 1; /* Contact successfully removed */
         }
     }

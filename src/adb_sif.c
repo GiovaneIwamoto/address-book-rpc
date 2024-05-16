@@ -4,10 +4,11 @@
 #include "adb_server.h"
 #include "adb.h" 
 
+static int retcode;
+
 int *initialize_1_svc(void *arg, struct svc_req *rqstp) {
-    static int result;
-    result = initialize();
-    return &result;
+    retcode = initialize();
+    return &retcode;
 }
 
 int *insert_1_svc(struct contact *arg, struct svc_req *rqstp) {
