@@ -13,4 +13,4 @@ int remove_contact(char *name);
 
 struct contact search_contact(char *name);
 
-struct agenda list_contacts(void);
+struct agenda list_contacts();

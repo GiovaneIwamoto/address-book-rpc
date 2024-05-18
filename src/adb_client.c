@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
     /* Client variables */
     int option;
     char name[50];
+    struct agenda address_book;
     struct contact new_contact;
 
     /* Client interface */
@@ -70,22 +71,23 @@ int main(int argc, char *argv[]) {
                 insert_result = insert_contact(&new_contact);
                 
                 if (insert_result == 0) {
-                    fprintf(stderr, "Error inserting contact\n");
-                    exit(1);
+                    fprintf(stderr, "\nError inserting contact\n");
                 } else {
-                    printf("Contact inserted successfully\n");
+                    printf("\nContact inserted successfully\n");
                 }
                 break;
 
             case 2: /* Remove contact */
-                printf("Enter name of contact to remove: ");
+                printf("\nEnter name of contact to remove: ");
                 scanf("%s", name);
+                
                 int remove_result;
                 remove_result = remove_contact(name);
+                
                 if (remove_result == 0) {
-                    fprintf(stderr, "Error removing contact\n");
+                    clnt_perror(handle, "\nError removing contact"); //FIXME: Perror use at interface
                 } else {
-                    printf("Contact removed successfully\n");
+                    printf("\nContact removed successfully\n");
                 }
                 break;
 
@@ -93,8 +95,20 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 4: /* List contacts */
-                break;
+                agenda result_agenda;
+                result_agenda = list_contacts(handle);
 
+                if (result_agenda.tam == 0) {
+                    fprintf(stderr, "\nNo contacts in address book\n");
+                } else {
+                    for (int i=0; i < result_agenda.tam; i++){
+                        struct contact c = result_agenda.contacts[i];
+                        printf("\nName: %s", c.name);
+                    };
+                    printf("\n ");
+                }
+                break;
+                
             case 5: /* Exit client */
                 printf("Exiting the program\n");
                 clnt_destroy(handle);

@@ -14,22 +14,22 @@ int initialize() {
 
 /* Insert new contact */
 int insert_contact(struct contact *new_contact) {
-    static int result;
-    result = *insert_1(new_contact, handle);
-    if (result == 0) {
+    int * result;
+    result = insert_1(new_contact, handle);
+    if (result == (int *)NULL) 
         cli_error();
-    }
-    return result;
+    
+    return *result;
 }
 
 /* Remove contact */
 int remove_contact(char *name) {
-    static int result;
-    result = *remove_1(&name, handle);
-    if (result == 0) {
+    int * result;
+    result = remove_1(&name, handle);
+    if (result == (int *)NULL) 
         cli_error();
-    }
-    return result;
+    
+    return * result;
 }
 
 /* Search contact */
@@ -61,7 +61,7 @@ void cli_error()
 /*  An error occurred while calling the server
     Print error message and die */
     
-   printf("RPC Failed\n");
+   printf("\nRPC Failed\n");
    clnt_perror(handle, "RPC Error");
    clnt_destroy( handle );
    exit(1);
