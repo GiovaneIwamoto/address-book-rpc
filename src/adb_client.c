@@ -3,6 +3,7 @@
 #include <string.h>
 #include "adb_cif.h"
 #include "adb.h"
+//FIXME: Stderr, Validation, Default case
 
 /* Validation functions for each field */
 int validate_name(const char *name) {
@@ -22,17 +23,19 @@ int validate_address(const char *address) {
 }
 
 void print_menu() {
-    printf("\n ADDRESS BOOK \n");
-    printf("------------------\n");
-    printf("1. INSERT CONTACT\n");
-    printf("2. REMOVE CONTACT\n");
-    printf("3. SEARCH CONTACT\n");
-    printf("4. LIST ALL CONTACTS\n");
-    printf("5. EXIT\n");
+    printf("\n  ADDRESS BOOK\n");
+    printf("-----------------------\n");
+    printf("| 0. INITIALIZE NEW    \n");
+    printf("| 1. INSERT CONTACT    \n");
+    printf("| 2. REMOVE CONTACT    \n");
+    printf("| 3. SEARCH CONTACT    \n");
+    printf("| 4. LIST ALL CONTACTS \n");
+    printf("| 5. EXIT              \n");
     printf("\nChoose an option: ");
 }
 
 int main(int argc, char *argv[]) {
+    system("clear");    
     char *server;   
     
     /* Usage message */
@@ -49,16 +52,6 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     
-    /* Initialize address book */
-    int result_initialize;     
-    result_initialize = initialize();
-    if (result_initialize == 0) {
-        fprintf(stderr, "Error connecting to remote address book\n");
-        exit(1);
-    } else {
-        printf("Address Book connected successfully\n");
-    }
-
     /* Client variables */
     int option;
     char name[50];
@@ -71,6 +64,19 @@ int main(int argc, char *argv[]) {
         scanf("%d", &option);
     
         switch (option) {
+            case 0: /* Initialize address book */
+                system("clear");
+                int result_initialize;     
+                result_initialize = initialize();
+                
+                if (result_initialize == 0) {
+                    fprintf(stderr, "Error initializing address book\n");
+                    exit(1);
+                } else {
+                    printf("Address Book initialized successfully\n");
+                }
+                break;
+
             case 1: /* Insert contact */
                 printf("Enter name: ");
                 scanf("%s", new_contact.name);
@@ -83,6 +89,7 @@ int main(int argc, char *argv[]) {
                 
                 printf("Enter address: ");
                 scanf("%s", new_contact.address);
+                system("clear");
 
                 if (!validate_name(new_contact.name)) {
                     printf("\nFailed to insert contact: Invalid name\n");
@@ -114,7 +121,8 @@ int main(int argc, char *argv[]) {
             case 2: /* Remove contact */
                 printf("\nEnter name of contact to remove: ");
                 scanf("%s", name);
-                
+                system("clear");
+
                 int remove_result;
                 remove_result = remove_contact(name);
                 
@@ -129,11 +137,13 @@ int main(int argc, char *argv[]) {
                 printf("\nEnter name of contact to search: ");
                 scanf("%s", name);
 
+                system("clear");
+
                 contact search_result;
                 search_result = search_contact(name);
 
                 if (strcmp(search_result.name, "not_found") == 0) {
-                            printf("\nContact not found\n");
+                    printf("\nContact not found\n");
                 }
                 else {
                     printf("\nName: %s\nCPF: %s\nPhone: %s\nAddress: %s\n",
@@ -144,6 +154,8 @@ int main(int argc, char *argv[]) {
             case 4: /* List contacts */
                 agenda result_agenda;
                 result_agenda = list_contacts(handle);
+
+                system("clear");
 
                 if (result_agenda.tam == 0) {
                     fprintf(stderr, "\nNo contacts in address book\n");
@@ -161,13 +173,9 @@ int main(int argc, char *argv[]) {
                 clnt_destroy(handle);
                 exit(0);
                 break;
-
-            default:
-                printf("Invalid option\n");
-                exit(0);
+            // default:
         }
     }
-    
     return 0;
 }
     

@@ -8,7 +8,7 @@ int initialize() {
     result = initialize_1(NULL, handle);
     if (result == (int *)NULL) 
         cli_error();
-     
+
     return *result; 
 } 
 
@@ -29,7 +29,7 @@ int remove_contact(char *name) {
     if (result == (int *)NULL) 
         cli_error();
     
-    return * result;
+    return *result;
 }
 
 /* Search contact */
@@ -37,11 +37,10 @@ struct contact search_contact(char *name) {
     static struct contact result;
     struct contact *result_ptr = search_1(&name, handle);
     if (result_ptr == NULL) {
-        clnt_perror(handle, "Contact not found");
+        cli_error();
     } else {
-        result = *result_ptr;
+        return *result_ptr;
     }
-    return result;
 }
 
 /* List contacts */
@@ -49,11 +48,10 @@ struct agenda list_contacts(){
     static struct agenda result;
     struct agenda *result_ptr = list_1(NULL, handle);
     if(result_ptr == NULL){
-        clnt_perror(handle, "Error listing all contacts");
+        cli_error();
     } else {
-        result = *result_ptr;
+        return *result_ptr;
     }
-    return result;
 }
 
 void cli_error()
@@ -61,8 +59,7 @@ void cli_error()
 /*  An error occurred while calling the server
     Print error message and die */
     
-   printf("\nRPC Failed\n");
-   clnt_perror(handle, "RPC Error");
+   clnt_perror(handle, "RPC Failed");
    clnt_destroy( handle );
    exit(1);
 }
