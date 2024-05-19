@@ -4,6 +4,23 @@
 #include "adb_cif.h"
 #include "adb.h"
 
+/* Validation functions for each field */
+int validate_name(const char *name) {
+    return strlen(name) > 0 && strlen(name) <= 50;
+}
+
+int validate_cpf(const char *cpf) {
+    return strlen(cpf) > 0 && strlen(cpf) <= 14;
+}
+
+int validate_phone(const char *phone) {
+    return strlen(phone) > 0 && strlen(phone) <= 15;
+}
+
+int validate_address(const char *address) {
+    return strlen(address) > 0 && strlen(address) <= 50;
+}
+
 void print_menu() {
     printf("\n ADDRESS BOOK \n");
     printf("------------------\n");
@@ -17,7 +34,6 @@ void print_menu() {
 
 int main(int argc, char *argv[]) {
     char *server;   
-    int result;     
     
     /* Usage message */
     if (argc < 2) {
@@ -34,8 +50,9 @@ int main(int argc, char *argv[]) {
     }
     
     /* Initialize address book */
-    result = initialize();
-    if (result == 0) {
+    int result_initialize;     
+    result_initialize = initialize();
+    if (result_initialize == 0) {
         fprintf(stderr, "Error connecting to remote address book\n");
         exit(1);
     } else {
@@ -66,10 +83,27 @@ int main(int argc, char *argv[]) {
                 
                 printf("Enter address: ");
                 scanf("%s", new_contact.address);
+
+                if (!validate_name(new_contact.name)) {
+                    printf("\nFailed to insert contact: Invalid name\n");
+                    break;
+                }
+                if (!validate_cpf(new_contact.cpf)) {
+                    printf("\nFailed to insert contact: Invalid CPF\n");
+                    break;
+                }
+                if (!validate_phone(new_contact.phone)) {
+                    printf("\nFailed to insert contact: Invalid phone\n");
+                    break;
+                }
+                if (!validate_address(new_contact.address)) {
+                    printf("\nFailed to insert contact: Invalid address\n");
+                    break;
+                }
                 
                 int insert_result;
                 insert_result = insert_contact(&new_contact);
-                
+
                 if (insert_result == 0) {
                     fprintf(stderr, "\nError inserting contact\n");
                 } else {
@@ -85,13 +119,26 @@ int main(int argc, char *argv[]) {
                 remove_result = remove_contact(name);
                 
                 if (remove_result == 0) {
-                    clnt_perror(handle, "\nError removing contact"); //FIXME: Perror use at interface
+                    printf("\nContact not found\n");
                 } else {
                     printf("\nContact removed successfully\n");
                 }
                 break;
 
             case 3: /* Search contact */
+                printf("\nEnter name of contact to search: ");
+                scanf("%s", name);
+
+                contact search_result;
+                search_result = search_contact(name);
+
+                if (strcmp(search_result.name, "not_found") == 0) {
+                            printf("\nContact not found\n");
+                }
+                else {
+                    printf("\nName: %s\nCPF: %s\nPhone: %s\nAddress: %s\n",
+                    search_result.name,search_result.cpf,search_result.phone,search_result.address);
+                }
                 break;
 
             case 4: /* List contacts */
@@ -117,7 +164,7 @@ int main(int argc, char *argv[]) {
 
             default:
                 printf("Invalid option\n");
-                break;
+                exit(0);
         }
     }
     
