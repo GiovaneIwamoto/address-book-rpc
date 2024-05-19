@@ -10,7 +10,7 @@ struct agenda address_book = {.tam = 0};
 /* Init address book data */
 
 int initialize(){
-    printf("Initializing address book\n");
+    printf("Initializing empty address book\n");
     address_book.tam = 0; 
     return 1; 
 }

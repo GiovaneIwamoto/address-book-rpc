@@ -4,23 +4,22 @@
 #include "adb_server.h"
 #include "adb.h" 
 
-static int retcode;
-
 int *initialize_1_svc(void *arg, struct svc_req *rqstp) {
+    static int retcode;
     retcode = initialize();
     return &retcode;
 }
 
 int *insert_1_svc(struct contact *arg, struct svc_req *rqstp) {
-    static int result;
-    result = insert_contact(*arg);
-    return &result;
+    static int retcode;
+    retcode = insert_contact(*arg);
+    return &retcode;
 }
 
 int *remove_1_svc(char **arg, struct svc_req *rqstp) {
-    static int result;
-    result = remove_contact(*arg);
-    return &result;
+    static int retcode;
+    retcode = remove_contact(*arg);
+    return &retcode;
 }
 
 struct contact *search_1_svc(char **arg, struct svc_req *rqstp) {
