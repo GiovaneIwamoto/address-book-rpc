@@ -1,7 +1,7 @@
 import os
 
 # Files to delete
-files_to_delete = ["./src/adb_clnt.c","./src/adb_svc.c","./src/adb_xdr.c","./src/adb.h","./src/server"]
+files_to_delete = ["./src/adb_clnt.c","./src/adb_svc.c","./src/adb_xdr.c","./src/adb.h","./src/server","./src/client"]
 
 # Directory path for files
 directory_path = os.path.dirname(os.path.abspath(__file__))
