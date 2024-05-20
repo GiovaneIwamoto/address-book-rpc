@@ -3,7 +3,6 @@
 #include <string.h>
 #include "adb_cif.h"
 #include "adb.h"
-//FIXME: Stderr
 
 /* Validation functions for each field */
 int validate_name(const char *name) {
@@ -140,7 +139,8 @@ int main(int argc, char *argv[]) {
                 remove_result = remove_contact(registered_contact.name);
                 
                 if (remove_result == 0) {
-                    printf("\nContact not found\n");
+                    fprintf(stderr, "\nContact not found\n");
+
                 } else {
                     printf("\nContact removed successfully\n");
                 }
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
                 search_result = search_contact(registered_contact.name);
 
                 if (strcmp(search_result.name, "not_found") == 0) {
-                    printf("\nContact not found\n");
+                    fprintf(stderr, "\nContact not found\n");
                 }
                 else {
                     printf("\nName: %s\nCPF: %s\nPhone: %s\nAddress: %s\n",
@@ -190,7 +190,7 @@ int main(int argc, char *argv[]) {
             
             default: /* Invalid option */
                 system("clear");
-                printf("Invalid option\n");
+                fprintf(stderr, "Invalid Option\n");
                 break;
         }
     }
