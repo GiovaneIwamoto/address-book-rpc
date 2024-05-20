@@ -59,7 +59,7 @@ struct contact search_contact(char *name)
     }
     /* Return an empty contact */
     
-    printf("Contact not found: %s\n", name);
+    //printf("Contact not found: %s\n", name);
     struct contact empty_contact;
     strcpy(empty_contact.name, "not_found");    
     return empty_contact;

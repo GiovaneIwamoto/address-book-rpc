@@ -3,7 +3,7 @@
 #include <string.h>
 #include "adb_cif.h"
 #include "adb.h"
-//FIXME: Stderr, Validation, Default case
+//FIXME: Stderr
 
 /* Validation functions for each field */
 int validate_name(const char *name) {
@@ -54,15 +54,21 @@ int main(int argc, char *argv[]) {
     
     /* Client variables */
     int option;
-    char name[50];
     struct agenda address_book;
     struct contact new_contact;
+    struct contact registered_contact;
 
     /* Client interface */
     while (1) {
         print_menu();
-        scanf("%d", &option);
     
+        if (scanf("%d", &option) != 1) {
+            system("clear");
+            printf("Invalid input\n");
+            while (getchar() != '\n');
+            continue;
+        }
+  
         switch (option) {
             case 0: /* Initialize address book */
                 system("clear");
@@ -78,17 +84,22 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 1: /* Insert contact */
+                while (getchar() != '\n');
                 printf("Enter name: ");
-                scanf("%s", new_contact.name);
-                
+                fgets(new_contact.name, sizeof(new_contact.name), stdin);                
+                new_contact.name[strcspn(new_contact.name, "\n")] = 0;
+
                 printf("Enter CPF: ");
                 scanf("%s", new_contact.cpf);
-                
+                while (getchar() != '\n');
+
                 printf("Enter phone: ");
                 scanf("%s", new_contact.phone);
-                
+                while (getchar() != '\n');
+
                 printf("Enter address: ");
-                scanf("%s", new_contact.address);
+                fgets(new_contact.address, sizeof(new_contact.address), stdin);
+                new_contact.address[strcspn(new_contact.address, "\n")] = 0;
                 system("clear");
 
                 if (!validate_name(new_contact.name)) {
@@ -119,12 +130,14 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 2: /* Remove contact */
+                while (getchar() != '\n');
                 printf("\nEnter name of contact to remove: ");
-                scanf("%s", name);
+                fgets(registered_contact.name, sizeof(registered_contact.name), stdin);                
+                registered_contact.name[strcspn(registered_contact.name, "\n")] = 0;
                 system("clear");
 
                 int remove_result;
-                remove_result = remove_contact(name);
+                remove_result = remove_contact(registered_contact.name);
                 
                 if (remove_result == 0) {
                     printf("\nContact not found\n");
@@ -134,13 +147,14 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 3: /* Search contact */
+                while (getchar() != '\n');
                 printf("\nEnter name of contact to search: ");
-                scanf("%s", name);
-
+                fgets(registered_contact.name, sizeof(registered_contact.name), stdin);                
+                registered_contact.name[strcspn(registered_contact.name, "\n")] = 0;
                 system("clear");
 
                 contact search_result;
-                search_result = search_contact(name);
+                search_result = search_contact(registered_contact.name);
 
                 if (strcmp(search_result.name, "not_found") == 0) {
                     printf("\nContact not found\n");
@@ -173,7 +187,11 @@ int main(int argc, char *argv[]) {
                 clnt_destroy(handle);
                 exit(0);
                 break;
-            // default:
+            
+            default: /* Invalid option */
+                system("clear");
+                printf("Invalid option\n");
+                break;
         }
     }
     return 0;
