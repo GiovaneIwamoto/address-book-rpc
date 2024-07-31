@@ -48,7 +48,7 @@ $ python3 clear_rpc.py
 ### **PORTMAP AND RPCBIND**
 
 > [!IMPORTANT]
-> Rpcbind is responsible for mapping RPC program numbers to network addresses, thus allowing clients to locate and connect to the appropriate services on the network
+> Rpcbind is responsible for mapping RPC program numbers to network addresses, thus allowing clients to locate and connect to the appropriate services on the network.
 
 ```ruby
 'Portmap error init service'
